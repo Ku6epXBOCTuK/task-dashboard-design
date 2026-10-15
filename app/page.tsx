@@ -86,7 +86,8 @@ export default function Page() {
       <aside className="sidebar">
         <div className="brand"><span>backlog</span><i>.</i></div>
         <nav className="primary-nav" aria-label="Primary navigation">
-          <button className="nav-item active"><ClipboardList data-icon="inline-start" /> Tasks <span className="nav-count">24</span></button>
+          <a className="nav-item active" href="/"><ClipboardList data-icon="inline-start" /> Tasks <span className="nav-count">24</span></a>
+          <a className="nav-item" href="/kanban"><FolderKanban data-icon="inline-start" /> Kanban <span className="nav-count">4</span></a>
           <button className="nav-item"><BarChart3 data-icon="inline-start" /> Statistics <span className="nav-alert">2</span></button>
         </nav>
         <div className="projects-heading">
