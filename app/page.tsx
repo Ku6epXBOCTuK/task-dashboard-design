@@ -16,6 +16,8 @@ import {
   Plus,
   Search,
   SlidersHorizontal,
+  Sun,
+  Moon,
   Tag,
   Trash2,
   X,
@@ -70,6 +72,7 @@ export default function Page() {
   const [activeProject, setActiveProject] = useState('all')
   const [selected, setSelected] = useState<Task | null>(tasks[6])
   const [projectsOpen, setProjectsOpen] = useState(true)
+  const [lightTheme, setLightTheme] = useState(false)
 
   const filteredTasks = useMemo(() => tasks.filter((task) => {
     const matchesQuery = `${task.id} ${task.title} ${task.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase())
@@ -79,7 +82,7 @@ export default function Page() {
   const clearFilters = () => { setQuery(''); setStatus('all'); setPriority('all'); setActiveProject('all') }
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell ${lightTheme ? 'theme-light' : ''}`}>
       <aside className="sidebar">
         <div className="brand"><span>backlog</span><i>.</i></div>
         <nav className="primary-nav" aria-label="Primary navigation">
@@ -100,7 +103,7 @@ export default function Page() {
 
       <section className={`workspace ${selected ? 'with-detail compact-table' : ''}`}>
         <header className="workspace-header">
-          <div className="title-row"><div><p className="eyebrow">WORKSPACE / TASKS</p><h1>Projects</h1></div><div className="header-actions"><button className="icon-button" aria-label="Collapse sidebar"><PanelLeftClose /></button><button className="new-task"><Plus data-icon="inline-start" /> New task</button></div></div>
+          <div className="title-row"><div><p className="eyebrow">WORKSPACE / TASKS</p><h1>Projects</h1></div><div className="header-actions"><button className="icon-button" onClick={() => setLightTheme(!lightTheme)} aria-label={lightTheme ? 'Switch to dark theme' : 'Switch to light theme'}>{lightTheme ? <Moon /> : <Sun />}</button><button className="icon-button" aria-label="Collapse sidebar"><PanelLeftClose /></button><button className="new-task"><Plus data-icon="inline-start" /> New task</button></div></div>
           <div className="search-wrap"><Search /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by title, description, and ID" aria-label="Search tasks" /><kbd>/</kbd></div>
           <div className="filter-row"><div className="filter-group"><span className="filter-label">STATUS</span>{statusOptions.map((option) => <button key={option} onClick={() => setStatus(status === option ? 'all' : option)} className={`filter-chip ${status === option ? 'active' : ''}`}><StatusDot status={option} />{option}</button>)}</div><div className="filter-group priority-group"><span className="filter-label">PRIORITY</span>{priorityOptions.map((option) => <button key={option} onClick={() => setPriority(priority === option ? 'all' : option)} className={`filter-chip priority-${option} ${priority === option ? 'active' : ''}`}>{option}</button>)}</div><button className="clear-filters" onClick={clearFilters}><X /> Clear</button></div>
           <div className="meta-row"><button className="select-filter"><FolderKanban /> Epic: <strong>any</strong><ChevronDown /></button><button className="select-filter"><Tag /> Tags <strong>(25)</strong><ChevronDown /></button><span className="result-count">{filteredTasks.length} visible / 27 total</span></div>
